@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>任务四：基础JavaScript练习（一）</title>
+    <style>
+        .block{display:inline-block;width: 15px;}
+        li{list-style-type: none;}
+        .list{display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: red;
+            color: white;
+            font-size: 20px;
+            line-height: 30px;
+            text-align: center;
+            margin-left: 5px;
+            font-weight: bold;}
+        ul{padding: 0;}
+
+
+
+
+    </style>
+</head>
+<body>
+<div id="content">
+<input type="text" id="text" >
+<input type="button" value="左侧入">
+<input type="button" value="右侧入">
+<span class="block"></span>
+<input type="button" value="左侧出">
+<input type="button" value="右侧出"><br />
+    <ul>
+        <li id="list"></li>
+    </ul>
+</div>
+
+
+<script>
+     var text=document.getElementById("text"),
+         content=document.getElementById("content"),
+         show=document.getElementById("list");
+     leftin=document.getElementsByTagName("input")[1],
+     rightin=document.getElementsByTagName("input")[2],
+     leftout=document.getElementsByTagName("input")[3],
+     rightout=document.getElementsByTagName("input")[4];
+
+
+    //左侧入
+    function leftIn() {
+        if (!isNaN(text.value)&&text.value!=="") {
+            var span = document.createElement("span");
+            span.innerHTML = text.value;
+            span.className = "list";
+            show.hasChildNodes()? show.insertBefore(span,show.firstChild):show.appendChild(span);
+        }
+        else {return false}
+    }
+
+      //右侧入
+        function rightIn() {
+            if( !isNaN(text.value)&&text.value!=="") {
+                var span=document.createElement("span");
+                span.innerHTML = text.value;
+                span.className ="list";
+                show.appendChild(span);
+            }
+     }
+     
+     //右侧出
+       function rightOut() {
+        var number=show.lastChild.innerHTML;
+        text.value=number;
+           show.removeChild(show.lastChild);
+        }
+
+    //左侧出
+    function leftOut() {
+        var number=show.firstChild.innerHTML;
+        text.value=number;
+        show.removeChild(show.firstChild);
+    }
+
+    //
+    function spanout(e) {
+        e = e || window.event;
+        var t = e.target || e.srcElement,  //t:目标对象
+            tagName = t.tagName;　//tagName标签名称
+        if (tagName == 'SPAN') {
+            show.removeChild(t);
+        }
+    }
+
+
+     leftin.addEventListener("click",leftIn,false);
+     rightin.addEventListener("click",rightIn,false);
+     rightout.addEventListener("click",rightOut,false);
+     leftout.addEventListener("click",leftOut,false);
+     show.addEventListener("click",spanout,false);
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
