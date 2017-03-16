@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>任务四：基础JavaScript练习（一）</title>
+    <style>
+        .block{display:inline-block;width: 15px;}
+
+
+
+        ul{display:flex;
+            justify-content: center;
+            align-content: flex-end;
+            align-items: flex-end;
+            height: 500px;
+            width: 90%;
+            margin-left: 20px;
+        }
+        div{display: inline-block;}
+        li{list-style-type: none;
+            display: inline-block;
+            width: 20px;
+            background-color: red;
+            color: white;
+
+            text-align: center;
+            margin-left: 5px;
+            font-weight: bold;
+        }
+
+
+
+
+
+    </style>
+</head>
+<body>
+
+<input type="text" id="text" >
+<div id="button">
+<button id="leftin">左侧入</button>
+<button id="rightin">右侧入</button>
+<span class="block"></span>
+<button id="leftout">左侧出</button>
+<button id="rightout">右侧出</button>
+<button id="random">随机生成数组</button>
+<button id="sortdata">排序</button>
+</div>
+<ul id="result">
+
+</ul>
+
+
+
+<script>
+/*
+        var text = document.getElementById("text"),
+            numbers=[],
+            content = document.getElementById("content"),
+            show = document.getElementById("list");
+            leftin = document.getElementsByTagName("input")[1],
+            rightin = document.getElementsByTagName("input")[2],
+            leftout = document.getElementsByTagName("input")[3],
+            rightout = document.getElementsByTagName("input")[4];
+
+
+
+    //左侧入
+    function leftIn() {
+        var num =text.value,
+            span = document.createElement("span");
+        if(!enter(num)) return false;
+            if(span.length>3){
+                alert("元素数量超过限制")
+            } else {
+
+                // span.innerHTML = num;
+                span.style.height = num+"px";
+                show.hasChildNodes() ? show.insertBefore(span, show.firstChild) : show.appendChild(span);
+            }
+    }
+
+      //右侧入
+        function rightIn() {
+            if(enter()) {
+                var span=document.createElement("span");
+                span.innerHTML = text.value;
+                span.className ="list";
+                show.appendChild(span);
+            }
+     }
+     
+     //右侧出
+       function rightOut() {
+        var number=show.lastChild.innerHTML;
+        text.value=number;
+           show.removeChild(show.lastChild);
+        }
+
+    //左侧出
+    function leftOut() {
+        var number=show.firstChild.innerHTML;
+        text.value=number;
+        show.removeChild(show.firstChild);
+    }
+
+    //点击删除
+    function spanout(e) {
+        e = e || window.event;
+        var t = e.target || e.srcElement,  //t:目标对象
+            tagName = t.tagName;　//tagName标签名称
+        if (tagName == 'SPAN') {
+            show.removeChild(t);
+        }
+    }
+
+    //输入数字r
+    function enter(num) {
+        num=text;
+      if (isNaN(num.value)||num.value=="") return false;
+      if (num.value<10||num.value>100) return false;
+      return num;
+    }
+
+
+
+     leftin.addEventListener("click",leftIn,false);
+     rightin.addEventListener("click",rightIn,false);
+     rightout.addEventListener("click",rightOut,false);
+     leftout.addEventListener("click",leftOut,false);
+     show.addEventListener("click",spanout,false);
+     */
+
+
+
+    var number = [],
+        text = document.getElementById("text"),
+        result = document.getElementById("result"),
+        button = document.getElementById("button"),
+
+        leftin = document.getElementById("leftin"),
+        rightin = document.getElementById("rightin"),
+        leftout = document.getElementById("leftout"),
+        rightout = document.getElementById("rightout"),
+        random= document.getElementById(" random"),
+        sortdata=document.getElementById("sortdata");
+
+
+    //给按钮的父元素添加侦听，避免给每个按钮添加事件
+    button.addEventListener("click",function (e) {
+        var target=e.target||window.event,
+            input=text.value;
+
+        switch (target.id) {
+            case "leftin": {
+                if (input > 100 || input < 10 || isNaN(input)) {
+                    alert("请输入10-100之间的数");
+                    return false;
+                }
+                if (number.length < 60) {　　　　//控制最多只能输入60个数据
+                    number.unshift(input);
+                    show();
+                }
+                else alert("最多只能输入60个数据！");
+                break;
+            }
+
+            case "rightin": {
+                if (input > 100 || input < 10 || isNaN(input)) alert("请输入10-100之间的数");
+                if (number.length < 60) {　　　　//控制最多只能输入60个数据
+                    number.push(input);
+                    show();
+                }
+                else alert("最多只能输入60个数据！");
+                break;
+            }
+
+            case "leftout": {
+                number.shift();
+                show();
+                break;
+            }
+
+            case "rightout": {
+                number.pop();
+                show();
+                break;
+            }
+
+            case "random": {
+                for(var i=0;i<60;i++){
+                    number[i]= parseInt(Math.random()* 90 + 10);
+                }
+                show();
+                break;
+            }
+
+            //数组排序
+            case "sortdata": {
+                var i=0,
+                    j=1,
+                    max=null,
+                    time=null;
+                time=setInterval(run,5);
+                function run() {
+                    if(i<number.length){
+                        if(j<number.length){
+                            if(number[i]>number[j]){
+                                max=number[i];
+                                number[i]=number[j];
+                                number[j]=max;
+                                show();
+                            }
+                            j++;
+                        }else {
+                            i++;
+                            j=i+1;
+                        }
+                    }else {
+                        clearInterval(time);
+
+                    }
+                }
+            }
+        }
+    },false);
+
+    //将数据以柱状图的形式显示在页面上
+    function show() {
+        var content="";
+        for (var i = 0; i < number.length; i++) {
+            content+= "<li id='"+i+"' style='height:" + number[i]*5 + "px;'>" + number[i] + "</li>";
+        }
+        result.innerHTML=content;
+    }
+
+   //给数据列表的父元素添加侦听，点击数据列表时将其删除
+    result.addEventListener("click",function (e) {
+       var target=e.target||window.event;
+       if(target.nodeName!="LI") return false;
+       var de=parseInt(target.getAttribute("id"));
+       number.splice(de,1);
+        show();
+        return number
+    },false);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
