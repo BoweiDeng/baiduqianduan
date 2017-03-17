@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>任务四：基础JavaScript练习（一）</title>
+    <style>
+        .block{display:inline-block;width: 15px;}
+        .result .list{margin-right: 5px;
+                        background-color: aqua;
+                        display: inline-block;}
+        .result span{background-color: pink;}
+
+
+
+
+
+    </style>
+</head>
+<body>
+
+<textarea type="text" id="text" ></textarea>
+<div id="button">
+
+<button id="insert">插入</button>
+<span class="block"></span>
+<button id="leftout">左侧出</button>
+<button id="rightout">右侧出</button>
+<button id="search">查询</button>
+<input type="text" id="searchText">
+
+</div>
+<ul id="result" class="result">
+
+</ul>
+
+
+
+<script>
+
+
+    var number = [],
+        text = document.getElementById("text"),
+        result = document.getElementById("result"),
+        button = document.getElementById("button"),
+        insert = document.getElementById("insert"),
+        leftout = document.getElementById("leftout"),
+        rightout = document.getElementById("rightout"),
+        search= document.getElementById("search"),
+        searchText=document.getElementById("searchText");
+
+
+
+    //给按钮的父元素添加侦听，避免给每个按钮添加事件
+    button.addEventListener("click",function (e) {
+        var target=e.target||window.event,
+            input=text.value,
+            words=input.trim();
+
+            switch (target.id) {
+                //插入
+            case "insert": {
+                words=words.split(/[^0-9a-zA-Z\u4e00-\u9fa5]/).filter(function (e) {
+                    if(e!=null && e.length>0)  {
+                        return true;
+                    }else {
+                        return false;
+                    }
+                });
+                number=number.concat(words);
+                show();
+                break;
+            }
+            //从左侧删除
+            case "leftout": {
+                number.shift();
+                show();
+                break;
+            }
+            //从右侧删除
+            case "rightout": {
+                number.pop();
+                show();
+                break;
+            }
+            //搜索
+                case "search": {
+                    var words=searchText.value.trim();
+                    show(words);
+                    break;
+                }
+        }
+
+    },false);
+
+    //将数据显示在页面上
+    function show(words) {
+        result.innerHTML=number.map(function (e) {
+            if(words!=null && words.length>0) {
+                e = e.replace(new RegExp(words,"g"),"<span>" +words + "</span>");
+            }
+                return "<div class='list' >"+e+"</div>";
+
+        }).join("");
+    }
+
+
+
+</script>
+
+</body>
+</html>
